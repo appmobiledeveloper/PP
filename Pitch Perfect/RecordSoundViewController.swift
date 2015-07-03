@@ -21,7 +21,7 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder!, successfully flag: Bool) {
         if (flag){
             recordedAudio = RecordedAudio(filePathUrl: recorder.url,title: recorder.url.lastPathComponent!)
-            self.performSegueWithIdentifier("stopRecording", sender: recordedAudio)
+            performSegueWithIdentifier("stopRecording", sender: recordedAudio)
         }
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -39,16 +39,12 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
         recordingText.text = "Tap to record";
     }
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
         stopButton.hidden = true
         recordButton.enabled = true
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     @IBAction func recordAudio(sender: UIButton) {
-        println("Record in progress")
         recordingText.hidden = false
         recordingText.text = "recording";
         stopButton.hidden    = false
@@ -62,8 +58,6 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
         let recordingName = formatter.stringFromDate(currentDateTime)+".wav"
         let pathArray = [dirPath, recordingName]
         let filePath = NSURL.fileURLWithPathComponents(pathArray)
-
-        println(filePath)
 
         var session = AVAudioSession.sharedInstance()
         session.setCategory(AVAudioSessionCategoryPlayAndRecord, error: nil)
